@@ -17,6 +17,7 @@ namespace ConsoleApplication2
         {
             GameofLife gameoflife = new GameofLife(20);
             gameoflife.runTheGame();
+
         }
     }
 }
