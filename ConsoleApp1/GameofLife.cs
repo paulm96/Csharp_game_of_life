@@ -22,9 +22,16 @@ namespace ConsoleApplication2
                 for (int j = 0; j < array.GetLength(1); ++j)
                 {
                     array[i, j] = rnd.Next(0, 2);
-                    //tmp[i,j] = array[i,j];
+                    //array[i, j] = 0;   //to make a glider
                 }
             }
+            //to make a glider
+            //array[10,10] = 1;
+            //array[10,11] = 1;
+            //array[10,12] = 1;
+            //array[11,10] = 1;
+            //array[12,11] = 1;
+
         }
 
         public void displayBoard()
@@ -38,7 +45,7 @@ namespace ConsoleApplication2
                         Console.ForegroundColor = ConsoleColor.Black;
                     }
                     System.Console.Write(array[i, j]);
-                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.Green;
                     System.Console.Write(" ");
 
                 }
@@ -49,76 +56,25 @@ namespace ConsoleApplication2
 
         public void DropTheResult()
         {
-            for (int i = 0; i < array.GetLength(0); ++i)
-            {
-                for (int j = 0; j < array.GetLength(1); ++j)
+            int counter = 0;
+            for (int i = 0; i < array.GetLength(0); ++i)   //dla kazdego elementu tablicy
+            {    
+                for (int j = 0; j < array.GetLength(1); ++j)     //dla kazdego elementu tablicy
                 {
-                    try
-                    {
-                        if (array[i - 1, j - 1] == 1)
-                            ++counter;
+                    for (int x = i - 1; x <= i + 1; ++x)    //dla kazdego z osmiu sasiadow
+                    {  
+                        for (int z = j - 1; z <= j + 1; ++z)   //dla kazdego z osmiu sasiadow
+                        {
+                            if ((x >= 0 && z >= 0 && x < array.GetLength(0) && z < array.GetLength(1)))  //warunki brzegowe
+                            {
+                                if (!(x == i && z == j))  //zeby nie liczyc samego siebie jako sąsiada
+                                {
+                                    if (array[x, z] == 1)
+                                        ++counter;
+                                }                                
+                            }                           
+                        }
                     }
-                    catch (IndexOutOfRangeException e)
-                    {
-                    }
-                    try
-                    {
-                        if (array[i - 1, j] == 1)
-                            ++counter;
-                    }
-                    catch (IndexOutOfRangeException e)
-                    {
-                    }
-                    try
-                    {
-                        if (array[i - 1, j + 1] == 1)
-                            ++counter;
-                    }
-                    catch (IndexOutOfRangeException e)
-                    {
-                    }
-                    try
-                    {
-                        if (array[i, j - 1] == 1)
-                            ++counter;
-                    }
-                    catch (IndexOutOfRangeException e)
-                    {
-                    }
-                    try
-                    {
-                        if (array[i, j + 1] == 1)
-                            ++counter;
-                    }
-                    catch (IndexOutOfRangeException e)
-                    {
-                    }
-                    try
-                    {
-                        if (array[i + 1, j - 1] == 1)
-                            ++counter;
-                    }
-                    catch (IndexOutOfRangeException e)
-                    {
-                    }
-                    try
-                    {
-                        if (array[i + 1, j] == 1)
-                            ++counter;
-                    }
-                    catch (IndexOutOfRangeException e)
-                    {
-                    }
-                    try
-                    {
-                        if (array[i + 1, j + 1] == 1)
-                            ++counter;
-                    }
-                    catch (IndexOutOfRangeException e)
-                    {
-                    }
-
-                    //Console.Write(counter);
 
                     if ((counter < 2 || counter > 3) && array[i, j] == 1)
                         tmp[i, j] = 0;
@@ -131,7 +87,7 @@ namespace ConsoleApplication2
 
                     counter = 0;
                 }
-            }
+            }           
         }
 
         public void updateChanges()
@@ -151,8 +107,8 @@ namespace ConsoleApplication2
             while (true)
             {
                 this.displayBoard();
-
-                System.Console.Write("Press any key to next generation...");
+                //System.Threading.Thread.Sleep(20);
+                System.Console.Write("Press ENTER to next generation...");
                 System.Console.ReadLine();
                 Console.Clear();
 
